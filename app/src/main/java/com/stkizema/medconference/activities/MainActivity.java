@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements BaseBottomControl
     private FrameLayout bottomLayout;
     private BaseBottomController bottomController;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

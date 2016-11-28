@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.stkizema.medconference.R;
+import com.stkizema.medconference.db.DbHelper;
+import com.stkizema.medconference.db.User;
 
 public class LogInController extends BaseBottomController {
 
@@ -41,10 +43,16 @@ public class LogInController extends BaseBottomController {
     }
 
     private boolean checkOk() {
-        boolean check = true;
+        boolean check = false;
         String login = etLogIn.getText().toString();
         String pass = etPassword.getText().toString();
 
+        for (User user : DbHelper.getList()) {
+            if (user.getLogin().equals(login)) {
+                check = true;
+                return check;
+            }
+        }
         return check;
     }
 

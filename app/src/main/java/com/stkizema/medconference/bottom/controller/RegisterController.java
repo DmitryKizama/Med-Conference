@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.stkizema.medconference.R;
+import com.stkizema.medconference.db.DbHelper;
+import com.stkizema.medconference.db.User;
 
 public class RegisterController extends BaseBottomController {
 
@@ -30,6 +32,7 @@ public class RegisterController extends BaseBottomController {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                registerUser();
                 bottomControllerListener.onBtnOkClickListener();
             }
         });
@@ -37,5 +40,13 @@ public class RegisterController extends BaseBottomController {
         etLogIn = (EditText) parent.findViewById(R.id.et_login);
         etPassword = (EditText) parent.findViewById(R.id.et_password);
         etEmail = (EditText) parent.findViewById(R.id.et_email);
+    }
+
+    private void registerUser() {
+        String login = etLogIn.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
+        User user = new User(1L, User.PERMISSIONDOCTOR, login, email, password);
+        DbHelper.getUserDao().insert(user);
     }
 }
