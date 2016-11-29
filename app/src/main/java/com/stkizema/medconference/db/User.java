@@ -3,18 +3,20 @@ package com.stkizema.medconference.db;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 
-@Entity
+@Entity(indexes = {
+        @Index(value = "id", unique = true)
+})
 public class User {
 
     public static final String PERMISSIONDOCTOR = "Doctor";
     public static final String PERMISSIONADMIN = "Admin";
 
-    @NotNull
-    @Id
-    private Long id = 0L;
+    @Id(autoincrement = true)
+    private Long id;
 
     @NotNull
     @Property(nameInDb = "PERMISSION")
@@ -32,23 +34,18 @@ public class User {
     @Property(nameInDb = "PASSWORD")
     private String password;
 
+    @Generated(hash = 586692638)
+    public User() {
+    }
 
-    @Generated(hash = 23859074)
-    public User(@NotNull Long id, @NotNull String permission, @NotNull String login,
+    @Generated(hash = 217871901)
+    public User(Long id, @NotNull String permission, @NotNull String login,
             @NotNull String email, @NotNull String password) {
         this.id = id;
         this.permission = permission;
         this.login = login;
         this.email = email;
         this.password = password;
-    }
-
-    @Generated(hash = 586692638)
-    public User() {
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getPermission() {
@@ -83,8 +80,13 @@ public class User {
         this.password = password;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
+
 
 }

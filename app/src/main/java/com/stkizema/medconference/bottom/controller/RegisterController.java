@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stkizema.medconference.R;
 import com.stkizema.medconference.db.DbHelper;
@@ -32,7 +33,9 @@ public class RegisterController extends BaseBottomController {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerUser();
+                if (!registerUser()) {
+                    return;
+                }
                 bottomControllerListener.onBtnOkClickListener();
             }
         });
@@ -42,11 +45,53 @@ public class RegisterController extends BaseBottomController {
         etEmail = (EditText) parent.findViewById(R.id.et_email);
     }
 
-    private void registerUser() {
+    private boolean registerUser() {
         String login = etLogIn.getText().toString();
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
-        User user = new User(1L, User.PERMISSIONDOCTOR, login, email, password);
+        if (checkForExisting(login, email)) {
+            return false;
+        }
+        if (password.length() < 8) {
+            Toast.makeText(parent.getContext(), "Your password less than 8 characters!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!isValidEmailAddress(email)) {
+            Toast.makeText(parent.getContext(), "Incorrect email!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        User user = new User();
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPermission(User.PERMISSIONDOCTOR);
         DbHelper.getUserDao().insert(user);
+        return true;
+    }
+
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    private boolean checkForExisting(String login, String email) {
+        if (login.equals("") || email.equals("")) {
+            Toast.makeText(parent.getContext(), "Blank!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        for (User user : DbHelper.getList()) {
+            if (user.getLogin().equals(login)) {
+                Toast.makeText(parent.getContext(), "Such login already exist!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            if (user.getEmail().equals(email)) {
+                Toast.makeText(parent.getContext(), "Such email already exist!", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
     }
 }

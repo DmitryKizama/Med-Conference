@@ -48,9 +48,8 @@ public class LogInController extends BaseBottomController {
         String pass = etPassword.getText().toString();
 
         for (User user : DbHelper.getList()) {
-            if (user.getLogin().equals(login)) {
-                check = true;
-                return check;
+            if (user.getLogin().equals(login) && user.getPassword().equals(pass)) {
+                return true;
             }
         }
         return check;
