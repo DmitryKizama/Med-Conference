@@ -34,6 +34,15 @@ public class DbHelper {
         userQuery = userDao.queryBuilder().orderAsc(UserDao.Properties.Id).build();
     }
 
+    public static User getUser(String login) {
+        for (User user : getList()) {
+            if (user.getLogin().equals(login)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     public static List<User> getList() {
         return userQuery.list();
     }

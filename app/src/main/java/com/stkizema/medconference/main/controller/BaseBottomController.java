@@ -1,14 +1,13 @@
-package com.stkizema.medconference.bottom.controller;
+package com.stkizema.medconference.main.controller;
 
 import android.view.View;
-import android.widget.Button;
 
 abstract public class BaseBottomController {
     protected View parent;
     protected BottomControllerListener bottomControllerListener;
 
     public interface BottomControllerListener {
-        void onBtnOkClickListener();
+        void onBtnOkClickListener(String permission, String login);
 
         void onRegisterLoginChange(boolean flag);
     }

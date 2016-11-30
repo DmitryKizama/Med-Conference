@@ -1,4 +1,4 @@
-package com.stkizema.medconference.bottom.controller;
+package com.stkizema.medconference.main.controller;
 
 import android.graphics.Paint;
 import android.view.View;
@@ -22,10 +22,14 @@ public class LogInController extends BaseBottomController {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (adminLogin()) {
+                    bottomControllerListener.onBtnOkClickListener(User.PERMISSIONADMIN, "admin");
+                    return;
+                }
                 if (!checkOk()) {
                     return;
                 }
-                bottomControllerListener.onBtnOkClickListener();
+                bottomControllerListener.onBtnOkClickListener(User.PERMISSIONDOCTOR, etLogIn.getText().toString());
             }
         });
 
@@ -40,6 +44,13 @@ public class LogInController extends BaseBottomController {
 
         etLogIn = (EditText) parent.findViewById(R.id.et_login);
         etPassword = (EditText) parent.findViewById(R.id.et_password);
+    }
+
+    private boolean adminLogin() {
+        if (etLogIn.getText().toString().equals("admin") && etPassword.getText().toString().equals("admin")) {
+            return true;
+        }
+        return false;
     }
 
     private boolean checkOk() {

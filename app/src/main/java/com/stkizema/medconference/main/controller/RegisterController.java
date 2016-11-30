@@ -1,4 +1,4 @@
-package com.stkizema.medconference.bottom.controller;
+package com.stkizema.medconference.main.controller;
 
 import android.graphics.Paint;
 import android.view.View;
@@ -36,7 +36,7 @@ public class RegisterController extends BaseBottomController {
                 if (!registerUser()) {
                     return;
                 }
-                bottomControllerListener.onBtnOkClickListener();
+                bottomControllerListener.onBtnOkClickListener(User.PERMISSIONDOCTOR, etLogIn.getText().toString());
             }
         });
 
@@ -49,6 +49,7 @@ public class RegisterController extends BaseBottomController {
         String login = etLogIn.getText().toString();
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
+
         if (checkForExisting(login, email)) {
             return false;
         }
@@ -58,6 +59,9 @@ public class RegisterController extends BaseBottomController {
         }
         if (!isValidEmailAddress(email)) {
             Toast.makeText(parent.getContext(), "Incorrect email!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (adminRegistration(login, password)) {
             return false;
         }
 
@@ -91,6 +95,14 @@ public class RegisterController extends BaseBottomController {
                 Toast.makeText(parent.getContext(), "Such email already exist!", Toast.LENGTH_SHORT).show();
                 return true;
             }
+        }
+        return false;
+    }
+
+    private boolean adminRegistration(String login, String password) {
+        if (login.equals("admin") && password.equals("admin")) {
+            Toast.makeText(parent.getContext(), "Doesn`t allowed admin registration!", Toast.LENGTH_SHORT).show();
+            return true;
         }
         return false;
     }
