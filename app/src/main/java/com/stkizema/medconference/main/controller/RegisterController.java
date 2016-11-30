@@ -8,8 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stkizema.medconference.R;
-import com.stkizema.medconference.db.DbHelper;
-import com.stkizema.medconference.db.User;
+import com.stkizema.medconference.db.DbUserHelper;
+import com.stkizema.medconference.model.User;
 
 public class RegisterController extends BaseBottomController {
 
@@ -70,7 +70,7 @@ public class RegisterController extends BaseBottomController {
         user.setLogin(login);
         user.setPassword(password);
         user.setPermission(User.PERMISSIONDOCTOR);
-        DbHelper.getUserDao().insert(user);
+        DbUserHelper.getUserDao().insert(user);
         return true;
     }
 
@@ -86,7 +86,7 @@ public class RegisterController extends BaseBottomController {
             Toast.makeText(parent.getContext(), "Blank!", Toast.LENGTH_SHORT).show();
             return true;
         }
-        for (User user : DbHelper.getList()) {
+        for (User user : DbUserHelper.getList()) {
             if (user.getLogin().equals(login)) {
                 Toast.makeText(parent.getContext(), "Such login already exist!", Toast.LENGTH_SHORT).show();
                 return true;

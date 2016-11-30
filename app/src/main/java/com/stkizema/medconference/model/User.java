@@ -1,4 +1,4 @@
-package com.stkizema.medconference.db;
+package com.stkizema.medconference.model;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -7,9 +7,10 @@ import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
 
-@Entity(indexes = {
-        @Index(value = "id", unique = true)
-})
+@Entity(
+        indexes = {
+                @Index(value = "id", unique = true)
+        })
 public class User {
 
     public static final String PERMISSIONDOCTOR = "Doctor";
@@ -40,7 +41,7 @@ public class User {
 
     @Generated(hash = 217871901)
     public User(Long id, @NotNull String permission, @NotNull String login,
-            @NotNull String email, @NotNull String password) {
+                @NotNull String email, @NotNull String password) {
         this.id = id;
         this.permission = permission;
         this.login = login;

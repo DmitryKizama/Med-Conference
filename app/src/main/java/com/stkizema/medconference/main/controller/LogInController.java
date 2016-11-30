@@ -7,8 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.stkizema.medconference.R;
-import com.stkizema.medconference.db.DbHelper;
-import com.stkizema.medconference.db.User;
+import com.stkizema.medconference.db.DbUserHelper;
+import com.stkizema.medconference.model.User;
 
 public class LogInController extends BaseBottomController {
 
@@ -58,7 +58,7 @@ public class LogInController extends BaseBottomController {
         String login = etLogIn.getText().toString();
         String pass = etPassword.getText().toString();
 
-        for (User user : DbHelper.getList()) {
+        for (User user : DbUserHelper.getList()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(pass)) {
                 return true;
             }

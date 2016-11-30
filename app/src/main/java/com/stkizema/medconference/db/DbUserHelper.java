@@ -3,27 +3,32 @@ package com.stkizema.medconference.db;
 import android.content.Context;
 
 import com.stkizema.medconference.TopApp;
+import com.stkizema.medconference.model.DaoSession;
+import com.stkizema.medconference.model.User;
+import com.stkizema.medconference.model.UserDao;
 
 import org.greenrobot.greendao.query.Query;
 
 import java.util.List;
 
-public class DbHelper {
+public class DbUserHelper {
 
-    private static DbHelper instance;
+    private static DbUserHelper instance;
     private Context con;
     private static UserDao userDao;
     private static Query<User> userQuery;
 
-    private DbHelper(Context context) {
+    private DbUserHelper() {
+    }
+
+    private DbUserHelper(Context context) {
         initialize(context);
     }
 
-    public static synchronized DbHelper getInstance(Context context) {
+    public static synchronized void setInstance(Context context) {
         if (instance == null) {
-            instance = new DbHelper(context);
+            instance = new DbUserHelper(context);
         }
-        return instance;
     }
 
     public void initialize(Context context) {

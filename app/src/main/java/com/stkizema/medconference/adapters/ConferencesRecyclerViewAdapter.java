@@ -3,7 +3,12 @@ package com.stkizema.medconference.adapters;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter {
+public class ConferencesRecyclerViewAdapter extends RecyclerView.Adapter {
+
+    public ConferencesRecyclerViewAdapter() {
+
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return null;
