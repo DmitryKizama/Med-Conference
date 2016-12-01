@@ -13,9 +13,15 @@ import java.util.List;
 public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolderDoctor> {
 
     private List<User> list;
+    private DoctorRecyclerViewAdapterListener listener;
 
-    public DoctorRecyclerViewAdapter(List<User> list) {
+    public interface DoctorRecyclerViewAdapterListener {
+        void onCheckBoxClickListener(User user);
+    }
+
+    public DoctorRecyclerViewAdapter(List<User> list, DoctorRecyclerViewAdapterListener listener) {
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -25,9 +31,16 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolderDo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderDoctor holder, int position) {
+    public void onBindViewHolder(final ViewHolderDoctor holder, int position) {
         holder.name.setText(list.get(holder.getAdapterPosition()).getLogin());
         holder.emailDoctor.setText(list.get(holder.getAdapterPosition()).getEmail());
+
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onCheckBoxClickListener(list.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
