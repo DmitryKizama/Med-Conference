@@ -60,4 +60,14 @@ public class DbConferenceHelper {
     public static TopicDao getTopicDao() {
         return topicDao;
     }
+
+    public static Conference getConference(String name) {
+        for (Conference conf : getListConferences()) {
+            if (conf.getName().equals(name)) {
+                return conf;
+            }
+        }
+        return null;
+    }
+
 }

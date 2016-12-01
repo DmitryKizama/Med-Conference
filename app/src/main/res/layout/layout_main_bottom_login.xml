@@ -15,7 +15,8 @@
         android:hint="Login:"
         android:paddingLeft="24dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/hint" />
+        android:textColorHint="@color/hint"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <TextView
         android:layout_width="match_parent"
@@ -31,7 +32,8 @@
         android:inputType="textPassword"
         android:paddingLeft="24dp"
         android:textColor="@color/white"
-        android:textColorHint="@color/hint" />
+        android:textColorHint="@color/hint"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
 
     <LinearLayout

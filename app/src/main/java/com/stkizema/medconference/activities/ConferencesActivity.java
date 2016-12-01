@@ -1,5 +1,6 @@
 package com.stkizema.medconference.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,7 +59,7 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
             View view = LayoutInflater.from(this).inflate(R.layout.layout_controller_admin, topLayout, false);
             topLayout.removeAllViews();
             topLayout.addView(view);
-            adminController = new AdminController(topLayout, this);
+            adminController = new AdminController("admin", topLayout, this);
         }
     }
 
@@ -68,7 +69,9 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
     }
 
     @Override
-    public void onBtnAddConferenceClickListener() {
+    public void onBtnAddConferenceClickListener(String admin) {
 
+        Intent intent = new Intent(this, ConferenceCreateActivity.class);
+        startActivity(intent);
     }
 }

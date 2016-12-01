@@ -22,6 +22,10 @@ public class Conference {
     private Long conferenceId;
 
     @NotNull
+    @Property(nameInDb = "NAMECONFERENCE")
+    private String name;
+
+    @NotNull
     @Property(nameInDb = "DATE")
     private Date date;
 
@@ -45,9 +49,10 @@ public class Conference {
     @Generated(hash = 394449787)
     private transient ConferenceDao myDao;
 
-    @Generated(hash = 1952052368)
-    public Conference(Long conferenceId, @NotNull Date date) {
+    @Generated(hash = 1926992454)
+    public Conference(Long conferenceId, @NotNull String name, @NotNull Date date) {
         this.conferenceId = conferenceId;
+        this.name = name;
         this.date = date;
     }
 
@@ -167,6 +172,14 @@ public class Conference {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /** called by internal mechanisms, do not call yourself. */

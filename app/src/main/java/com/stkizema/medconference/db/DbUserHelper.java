@@ -9,6 +9,7 @@ import com.stkizema.medconference.model.UserDao;
 
 import org.greenrobot.greendao.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbUserHelper {
@@ -46,6 +47,16 @@ public class DbUserHelper {
             }
         }
         return null;
+    }
+
+    public static List<User> getListDoctors() {
+        List<User> list = new ArrayList<>();
+        for (User user : userQuery.list()) {
+            if (user.getPermission().equals(User.PERMISSIONDOCTOR)) {
+                list.add(user);
+            }
+        }
+        return list;
     }
 
     public static List<User> getList() {
