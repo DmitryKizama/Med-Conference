@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.stkizema.medconference.R;
 import com.stkizema.medconference.adapters.ConferencesRecyclerViewAdapter;
+import com.stkizema.medconference.db.DbConferenceHelper;
 import com.stkizema.medconference.db.DbUserHelper;
 import com.stkizema.medconference.model.User;
 import com.stkizema.medconference.user.topcontroller.AdminController;
@@ -37,7 +38,7 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerViewAdapter = new ConferencesRecyclerViewAdapter();
+        recyclerViewAdapter = new ConferencesRecyclerViewAdapter(DbConferenceHelper.getListConferences());
         recyclerView.setAdapter(recyclerViewAdapter);
 
         if (getIntent() != null) {
@@ -70,7 +71,6 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
 
     @Override
     public void onBtnAddConferenceClickListener(String admin) {
-
         Intent intent = new Intent(this, ConferenceCreateActivity.class);
         startActivity(intent);
     }

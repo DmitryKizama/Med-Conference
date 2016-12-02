@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.stkizema.medconference.R;
 
 public class ViewHolderDoctor extends RecyclerView.ViewHolder {
+
     public TextView name, emailDoctor;
     public CheckBox checkBox;
 

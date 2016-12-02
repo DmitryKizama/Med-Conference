@@ -1,26 +1,37 @@
 package com.stkizema.medconference.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
-public class ConferencesRecyclerViewAdapter extends RecyclerView.Adapter {
+import com.stkizema.medconference.R;
+import com.stkizema.medconference.model.Conference;
 
-    public ConferencesRecyclerViewAdapter() {
+import java.util.List;
 
+public class ConferencesRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolderConference> {
+
+    private List<Conference> list;
+
+    public ConferencesRecyclerViewAdapter(List<Conference> list) {
+        this.list = list;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+    public ViewHolderConference onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_conference_adapter, parent, false);
+        return new ViewHolderConference(v);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(ViewHolderConference holder, int position) {
+        holder.name.setText(list.get(holder.getAdapterPosition()).getName());
+        holder.date.setText(list.get(holder.getAdapterPosition()).getDate().toString());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 }

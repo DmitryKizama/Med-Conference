@@ -59,7 +59,9 @@ public class ConferenceCreateActivity extends AppCompatActivity implements Docto
                 Log.d("ConferenceCreateLog", "time = " + conf.getDate());
                 DbConferenceHelper.getConferenceDao().insert(conf);
                 DbConferenceHelper.getConference(conf.getName()).getListInvitedDoctors().addAll(listUser);
-                startActivity(new Intent(ConferenceCreateActivity.this, ConferencesActivity.class));
+                Intent intent = new Intent(ConferenceCreateActivity.this, ConferencesActivity.class);
+                intent.putExtra(MainActivity.EXTRAPERMISSION, User.PERMISSIONADMIN);
+                startActivity(intent);
             }
         });
         Log.d("ConferenceCreateLog", "OnCreate");
