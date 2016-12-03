@@ -14,11 +14,13 @@ import com.stkizema.medconference.R;
 import com.stkizema.medconference.adapters.ConferencesRecyclerViewAdapter;
 import com.stkizema.medconference.db.DbConferenceHelper;
 import com.stkizema.medconference.db.DbUserHelper;
+import com.stkizema.medconference.model.Conference;
 import com.stkizema.medconference.model.User;
 import com.stkizema.medconference.user.topcontroller.AdminController;
 import com.stkizema.medconference.user.topcontroller.DoctorController;
 
-public class ConferencesActivity extends AppCompatActivity implements DoctorController.DoctorControllerListener, AdminController.AdminControllerListener {
+public class ConferencesActivity extends AppCompatActivity implements DoctorController.DoctorControllerListener, AdminController.AdminControllerListener,
+        ConferencesRecyclerViewAdapter.ConferencesRecyclerViewAdapterListener {
 
     private FrameLayout topLayout;
     private RecyclerView recyclerView;
@@ -38,30 +40,31 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerViewAdapter = new ConferencesRecyclerViewAdapter(DbConferenceHelper.getListConferences());
-        recyclerView.setAdapter(recyclerViewAdapter);
+
 
         if (getIntent() != null) {
             Log.d("ConferenceActivityLog", "not null");
-            adminDoctorController(getIntent().getStringExtra(MainActivity.EXTRAPERMISSION));
+            adminDoctorController(getIntent().getStringExtra(MainActivity.EXTRAPERMISSION), getIntent().getStringExtra(MainActivity.EXTRALOGIN));
         }
     }
 
-    private void adminDoctorController(String permission) {
+    private void adminDoctorController(String permission, String login) {
         if (permission.equals(User.PERMISSIONDOCTOR)) {
-            Log.d("ConferenceActivityLog", "doctor");
+
+            recyclerViewAdapter = new ConferencesRecyclerViewAdapter(DbConferenceHelper.getListConferencesByUserLogin(login), this);
             View view = LayoutInflater.from(this).inflate(R.layout.layout_controller_doctor, topLayout, false);
             topLayout.removeAllViews();
             topLayout.addView(view);
             dController = new DoctorController(DbUserHelper.getUser(getIntent().getStringExtra(MainActivity.EXTRALOGIN))
                     , topLayout, this);
         } else {
-            Log.d("ConferenceActivityLog", "admin");
+            recyclerViewAdapter = new ConferencesRecyclerViewAdapter(DbConferenceHelper.getListConferences(), this);
             View view = LayoutInflater.from(this).inflate(R.layout.layout_controller_admin, topLayout, false);
             topLayout.removeAllViews();
             topLayout.addView(view);
             adminController = new AdminController("admin", topLayout, this);
         }
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     @Override
@@ -72,6 +75,19 @@ public class ConferencesActivity extends AppCompatActivity implements DoctorCont
     @Override
     public void onBtnAddConferenceClickListener(String admin) {
         Intent intent = new Intent(this, ConferenceCreateActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onConferenceClick(Conference conference) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

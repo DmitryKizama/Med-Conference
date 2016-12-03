@@ -11,7 +11,7 @@ import org.greenrobot.greendao.database.Database;
 
 public class TopApp extends Application {
 
-    private DaoSession daoSession;
+    private static DaoSession daoSession;
 
     @Override
     public void onCreate() {
@@ -25,7 +25,7 @@ public class TopApp extends Application {
         DbConferenceHelper.setInstance(this);
     }
 
-    public DaoSession getDaoSession() {
+    public static DaoSession getDaoSession() {
         return daoSession;
     }
 

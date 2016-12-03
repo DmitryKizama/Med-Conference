@@ -15,9 +15,8 @@ import java.util.List;
 public class DbUserHelper {
 
     private static DbUserHelper instance;
+    private static DaoSession daoSession;
     private Context con;
-    private static UserDao userDao;
-    private static Query<User> userQuery;
 
     private DbUserHelper() {
     }
@@ -34,10 +33,7 @@ public class DbUserHelper {
 
     public void initialize(Context context) {
         this.con = context;
-        DaoSession daoSession = ((TopApp) context).getDaoSession();
-        userDao = daoSession.getUserDao();
-
-        userQuery = userDao.queryBuilder().orderAsc(UserDao.Properties.Id).build();
+        daoSession = ((TopApp) context).getDaoSession();
     }
 
     public static User getUser(String login) {
@@ -49,7 +45,15 @@ public class DbUserHelper {
         return null;
     }
 
+    public static List<User> getAllDoctors() {
+        UserDao userDao = daoSession.getUserDao();
+        Query<User> userQuery = userDao.queryBuilder().where(UserDao.Properties.Permission.eq(User.PERMISSIONDOCTOR)).build();
+        return userQuery.list();
+    }
+
     public static List<User> getListDoctors() {
+        UserDao userDao = daoSession.getUserDao();
+        Query<User> userQuery = userDao.queryBuilder().where(UserDao.Properties.Permission.eq(User.PERMISSIONDOCTOR)).build();
         List<User> list = new ArrayList<>();
         for (User user : userQuery.list()) {
             if (user.getPermission().equals(User.PERMISSIONDOCTOR)) {
@@ -59,12 +63,24 @@ public class DbUserHelper {
         return list;
     }
 
+    public static User selectById(Long userId) {
+        UserDao userDao = daoSession.getUserDao();
+        Query<User> userQuery = userDao.queryBuilder().where(UserDao.Properties.Id.eq(userId)).build();
+        if (userQuery.list() == null || userQuery.list().isEmpty()) {
+            return null;
+        }
+        return userQuery.list().get(0);
+    }
+
     public static List<User> getList() {
+        UserDao userDao = daoSession.getUserDao();
+        Query<User> userQuery = userDao.queryBuilder().orderAsc(UserDao.Properties.Id).build();
         return userQuery.list();
     }
 
     public static UserDao getUserDao() {
-        return userDao;
+
+        return daoSession.getUserDao();
     }
 
 }

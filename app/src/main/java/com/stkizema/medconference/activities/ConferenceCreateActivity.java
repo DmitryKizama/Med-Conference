@@ -16,6 +16,7 @@ import com.stkizema.medconference.adapters.DoctorRecyclerViewAdapter;
 import com.stkizema.medconference.db.DbConferenceHelper;
 import com.stkizema.medconference.db.DbUserHelper;
 import com.stkizema.medconference.model.Conference;
+import com.stkizema.medconference.model.ConnectionConfUser;
 import com.stkizema.medconference.model.User;
 
 import java.util.ArrayList;
@@ -56,11 +57,18 @@ public class ConferenceCreateActivity extends AppCompatActivity implements Docto
                 Conference conf = new Conference();
                 conf.setName(etNameConference.getText().toString());
                 conf.setDate(Calendar.getInstance().getTime());
-                Log.d("ConferenceCreateLog", "time = " + conf.getDate());
                 DbConferenceHelper.getConferenceDao().insert(conf);
-                DbConferenceHelper.getConference(conf.getName()).getListInvitedDoctors().addAll(listUser);
+
+                for (User user : listUser) {
+                    ConnectionConfUser conn = new ConnectionConfUser();
+                    conn.setUserId(DbUserHelper.getUser(user.getLogin()).getId());
+                    conn.setConfId(DbConferenceHelper.getConference(conf.getName()).getConferenceId());
+                    DbConferenceHelper.getConnDao().insert(conn);
+                }
+
                 Intent intent = new Intent(ConferenceCreateActivity.this, ConferencesActivity.class);
                 intent.putExtra(MainActivity.EXTRAPERMISSION, User.PERMISSIONADMIN);
+                ConferenceCreateActivity.this.finish();
                 startActivity(intent);
             }
         });

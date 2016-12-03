@@ -24,15 +24,20 @@ public class Topic {
     private String description;
 
     @NotNull
+    @Property(nameInDb = "CONFERENCEID")
+    private Long conferenceId;
+
+    @NotNull
     @Property(nameInDb = "CREATORID")
     private Long creatorId;
 
-    @Generated(hash = 854699918)
+    @Generated(hash = 874632280)
     public Topic(Long topicId, @NotNull String name, @NotNull String description,
-                 @NotNull Long creatorId) {
+            @NotNull Long conferenceId, @NotNull Long creatorId) {
         this.topicId = topicId;
         this.name = name;
         this.description = description;
+        this.conferenceId = conferenceId;
         this.creatorId = creatorId;
     }
 
@@ -70,6 +75,14 @@ public class Topic {
 
     public void setCreatorId(Long creatorId) {
         this.creatorId = creatorId;
+    }
+
+    public Long getConferenceId() {
+        return this.conferenceId;
+    }
+
+    public void setConferenceId(Long conferenceId) {
+        this.conferenceId = conferenceId;
     }
 
 }

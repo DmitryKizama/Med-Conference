@@ -1,11 +1,14 @@
 package com.stkizema.medconference.model;
 
+import com.stkizema.medconference.db.DbUserHelper;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Index;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.query.Query;
 
 @Entity(
         indexes = {
@@ -16,7 +19,7 @@ public class User {
     public static final String PERMISSIONDOCTOR = "Doctor";
     public static final String PERMISSIONADMIN = "Admin";
 
-    @Id(autoincrement = true)
+    @Id
     private Long id;
 
     @NotNull
@@ -88,6 +91,7 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
 
 
 }
