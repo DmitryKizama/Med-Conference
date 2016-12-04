@@ -1,5 +1,6 @@
 package com.stkizema.medconference.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import com.stkizema.medconference.model.User;
 
 public class InConferenceActivity extends AppCompatActivity implements CreateTopicDialog.CreateTopicDialogListener {
 
+    public static final String EXTRACONFERID = "extra_conference_id";
     private RecyclerView rvTopics;
     private TopicsRecyclerViewAdapter adapter;
     private TextView tvName, tvData, tvDoctors;
@@ -55,7 +57,7 @@ public class InConferenceActivity extends AppCompatActivity implements CreateTop
         tvName.setText("Conference - " + DbConferenceHelper.getConferenceById(id).getName().toString());
         String str = "";
         int i = 1;
-        for (User u : DbConferenceHelper.getAllUsersForConferenceId(id)) {
+        for (User u : DbConferenceHelper.getAllUsersByConferenceId(id)) {
             str += i + ") " + u.getLogin() + "; ";
             ++i;
         }
@@ -71,11 +73,13 @@ public class InConferenceActivity extends AppCompatActivity implements CreateTop
                 }
             });
         } else {
-            btnInConfAct.setText("Change conference");
+            btnInConfAct.setText("Edit conference");
             btnInConfAct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(InConferenceActivity.this, EditConference.class);
+                    intent.putExtra(EXTRACONFERID, id);
+                    startActivity(intent);
                 }
             });
         }

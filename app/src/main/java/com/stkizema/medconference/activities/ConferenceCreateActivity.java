@@ -17,6 +17,7 @@ import com.stkizema.medconference.db.DbConferenceHelper;
 import com.stkizema.medconference.db.DbUserHelper;
 import com.stkizema.medconference.model.Conference;
 import com.stkizema.medconference.model.ConnectionConfUser;
+import com.stkizema.medconference.model.Topic;
 import com.stkizema.medconference.model.User;
 
 import java.util.ArrayList;
@@ -85,6 +86,11 @@ public class ConferenceCreateActivity extends AppCompatActivity implements Docto
             }
         }
         listUser.add(user);
+    }
+
+    @Override
+    public void onCheckBoxClickListener(Topic topic) {
+
     }
 
     private boolean checkOk() {

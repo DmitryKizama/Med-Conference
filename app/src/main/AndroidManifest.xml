@@ -19,6 +19,7 @@
         <activity android:name=".activities.ConferencesActivity" />
         <activity android:name=".activities.ConferenceCreateActivity" />
         <activity android:name=".activities.InConferenceActivity" />
+        <activity android:name=".activities.EditConference" />
     </application>
 
 </manifest>

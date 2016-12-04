@@ -39,7 +39,7 @@ public class ConferencesRecyclerViewAdapter extends RecyclerView.Adapter<ViewHol
 
         String str = "Doctors :";
         int i = 1;
-        for (User user : DbConferenceHelper.getAllUsersForConferenceId(list.get(holder.getAdapterPosition()).getConferenceId())) {
+        for (User user : DbConferenceHelper.getAllUsersByConferenceId(list.get(holder.getAdapterPosition()).getConferenceId())) {
             str = str + i + ") " + user.getLogin() + "\n";
             ++i;
         }

@@ -61,7 +61,7 @@ public class DbConferenceHelper {
         return conferenceQuery.list().get(0);
     }
 
-    public static List<User> getAllUsersForConferenceId(Long conferenceId) {
+    public static List<User> getAllUsersByConferenceId(Long conferenceId) {
         ConnectionConfUserDao connDao = daoSession.getConnectionConfUserDao();
         Query<ConnectionConfUser> queryConn = connDao.queryBuilder().where(ConnectionConfUserDao.Properties.ConfId.eq(conferenceId)).build();
         List<ConnectionConfUser> listJ = queryConn.list();

@@ -9,6 +9,7 @@ import com.stkizema.medconference.model.UserDao;
 
 import org.greenrobot.greendao.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbUserHelper {
@@ -74,6 +75,28 @@ public class DbUserHelper {
     public static UserDao getUserDao() {
 
         return daoSession.getUserDao();
+    }
+
+    public static List<User> getListDoctorsDontInvited(Long id) {
+        UserDao userDao = daoSession.getUserDao();
+        Query<User> userQuery = userDao.queryBuilder().where(UserDao.Properties.Permission.eq(User.PERMISSIONDOCTOR)).build();
+        List<User> listConf = DbConferenceHelper.getAllUsersByConferenceId(id);
+        List<User> list = new ArrayList<>();
+        for (User u : userQuery.list()) {
+            if (!isContains(u, listConf)) {
+                list.add(u);
+            }
+        }
+        return list;
+    }
+
+    private static boolean isContains(User user, List<User> list) {
+        for (User u : list) {
+            if (u.getId().equals(user.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
