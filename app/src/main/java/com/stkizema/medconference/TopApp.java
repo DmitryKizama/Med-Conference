@@ -3,6 +3,7 @@ package com.stkizema.medconference;
 import android.app.Application;
 
 import com.stkizema.medconference.db.DbConferenceHelper;
+import com.stkizema.medconference.db.DbTopicHelper;
 import com.stkizema.medconference.db.DbUserHelper;
 import com.stkizema.medconference.model.DaoMaster;
 import com.stkizema.medconference.model.DaoSession;
@@ -23,6 +24,7 @@ public class TopApp extends Application {
 
         DbUserHelper.setInstance(this);
         DbConferenceHelper.setInstance(this);
+        DbTopicHelper.setInstance(this);
     }
 
     public static DaoSession getDaoSession() {
