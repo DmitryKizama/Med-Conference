@@ -40,7 +40,7 @@ public class ConferencesRecyclerViewAdapter extends RecyclerView.Adapter<ViewHol
         String str = "Doctors :";
         int i = 1;
         for (User user : DbConferenceHelper.getAllUsersByConferenceId(list.get(holder.getAdapterPosition()).getConferenceId())) {
-            str = str + i + ") " + user.getLogin() + "\n";
+            str = str + i + ") " + user.getLogin() + "; ";
             ++i;
         }
         holder.tvDoctors.setText(str);

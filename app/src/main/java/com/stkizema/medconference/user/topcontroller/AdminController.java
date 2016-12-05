@@ -2,13 +2,14 @@ package com.stkizema.medconference.user.topcontroller;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.stkizema.medconference.R;
 
 public class AdminController {
     protected View parent;
     protected AdminControllerListener adminControllerListener;
-    private Button btnAdd;
+    private ImageView btnAdd;
 
     public interface AdminControllerListener {
         void onBtnAddConferenceClickListener(String admin);
@@ -17,7 +18,7 @@ public class AdminController {
     public AdminController(final String admin, View parent, AdminControllerListener adapterListener) {
         this.parent = parent;
         this.adminControllerListener = adapterListener;
-        btnAdd = (Button) parent.findViewById(R.id.btnAdd);
+        btnAdd = (ImageView) parent.findViewById(R.id.btnAdd);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
