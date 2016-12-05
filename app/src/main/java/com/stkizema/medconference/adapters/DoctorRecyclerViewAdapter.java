@@ -12,29 +12,19 @@ import com.stkizema.medconference.model.User;
 
 import java.util.List;
 
-public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolderDoctor> {
+public class DoctorRecyclerViewAdapter <T> extends RecyclerView.Adapter<ViewHolderDoctor> {
 
-    private List<User> listUser;
-    private List<Topic> listTopic;
+    private List<T> list;
     private DoctorRecyclerViewAdapterListener listener;
-    private boolean isDoctor;
 
     public interface DoctorRecyclerViewAdapterListener {
         void onCheckBoxClickListener(User user);
-
         void onCheckBoxClickListener(Topic topic);
     }
 
-    public DoctorRecyclerViewAdapter(List<User> list, DoctorRecyclerViewAdapterListener listener) {
-        this.listUser = list;
+    public DoctorRecyclerViewAdapter(List<T> list, DoctorRecyclerViewAdapterListener listener) {
+        this.list = list;
         this.listener = listener;
-        isDoctor = true;
-    }
-
-    public DoctorRecyclerViewAdapter(List<Topic> listTopic, DoctorRecyclerViewAdapterListener listener, boolean flag) {
-        this.listTopic = listTopic;
-        this.listener = listener;
-        isDoctor = false;
     }
 
     @Override
@@ -45,37 +35,45 @@ public class DoctorRecyclerViewAdapter extends RecyclerView.Adapter<ViewHolderDo
 
     @Override
     public void onBindViewHolder(final ViewHolderDoctor holder, int position) {
-        if (isDoctor) {
-            holder.name.setText(listUser.get(holder.getAdapterPosition()).getLogin());
-            holder.emailDoctor.setText(listUser.get(holder.getAdapterPosition()).getEmail());
+
+        T t = list.get(holder.getAdapterPosition());
+
+        if (t instanceof User) {
+            User user = (User) t;
+            holder.name.setText(user.getLogin());
+            holder.emailDoctor.setText(user.getEmail());
 
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onCheckBoxClickListener(listUser.get(holder.getAdapterPosition()));
+                    T t = list.get(holder.getAdapterPosition());
+                    User user = (User) t;
+                    listener.onCheckBoxClickListener(user);
                 }
             });
         } else {
-            holder.name.setText(listTopic.get(holder.getAdapterPosition()).getName());
-            holder.emailDoctor.setText(DbUserHelper.getUserById(listTopic.get(holder.getAdapterPosition()).getCreatorId()).getLogin());
+            Topic topic = (Topic) t;
+
+            holder.name.setText(topic.getName());
+            holder.emailDoctor.setText(DbUserHelper.getUserById(topic.getCreatorId()).getLogin());
 
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onCheckBoxClickListener(listTopic.get(holder.getAdapterPosition()));
+                    T t = list.get(holder.getAdapterPosition());
+                    Topic topic = (Topic) t;
+                    listener.onCheckBoxClickListener(topic);
                 }
             });
         }
-
-
     }
 
     @Override
     public int getItemCount() {
-        if (isDoctor) {
-            return listUser.size();
-        } else {
-            return listTopic.size();
+        if (list == null){
+            return 0;
         }
+
+        return list.size();
     }
 }

@@ -65,12 +65,12 @@ public class RegisterController extends BaseBottomController {
             return false;
         }
 
-        User user = new User();
-        user.setEmail(email);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setPermission(User.PERMISSIONDOCTOR);
-        DbUserHelper.getUserDao().insert(user);
+        User newUser = DbUserHelper.create(login, email, password);
+        if (newUser == null) {
+            Toast.makeText(parent.getContext(), "User with this email exists", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         return true;
     }
 

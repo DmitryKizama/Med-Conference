@@ -42,6 +42,8 @@ public class User {
     public User() {
     }
 
+
+
     @Generated(hash = 217871901)
     public User(Long id, @NotNull String permission, @NotNull String login,
                 @NotNull String email, @NotNull String password) {

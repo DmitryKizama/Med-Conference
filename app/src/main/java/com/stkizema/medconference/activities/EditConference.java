@@ -36,6 +36,7 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
     private List<User> listUser;
     private List<Topic> listTopic;
     private Long conferenceId;
+    private View tvNoDoctors, tvNoTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,8 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
         rvTopics = (RecyclerView) findViewById(R.id.rvTopics);
         btnDelete = (Button) findViewById(R.id.btnDelete);
         btnEdit = (Button) findViewById(R.id.btnEditOk);
+        tvNoDoctors = findViewById(R.id.tvNoDoctors);
+        tvNoTopic = findViewById(R.id.tvNoTopics);
 
         listUser = new ArrayList<>();
         listTopic = new ArrayList<>();
@@ -59,17 +62,45 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
         etDate.setText(DbConferenceHelper.getConferenceById(conferenceId).getDate().toString());
         etName.setText(DbConferenceHelper.getConferenceById(conferenceId).getName());
 
-        adapterDoc = new DoctorRecyclerViewAdapter(DbUserHelper.getListDoctorsDontInvited(conferenceId), this);
+        adapterDoc = new DoctorRecyclerViewAdapter<>(DbUserHelper.getListDoctorsDontInvited(conferenceId), this);
         rvDoctors.setAdapter(adapterDoc);
         rvDoctors.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvDoctors.setLayoutManager(mLayoutManager);
 
-        topicAdapter = new DoctorRecyclerViewAdapter(DbTopicHelper.getAllTopicByConferenceId(conferenceId), this, false);
+        adapterDoc.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (adapterDoc.getItemCount() == 0){
+                    tvNoDoctors.setVisibility(View.VISIBLE);
+                    rvDoctors.setVisibility(View.GONE);
+                } else {
+                    tvNoDoctors.setVisibility(View.GONE);
+                    rvDoctors.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        topicAdapter = new DoctorRecyclerViewAdapter<>(DbTopicHelper.getAllTopicByConferenceId(conferenceId), this);
         rvTopics.setAdapter(topicAdapter);
         rvTopics.setHasFixedSize(true);
         LinearLayoutManager mLayoutManagerTopic = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvTopics.setLayoutManager(mLayoutManagerTopic);
+
+        topicAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (adapterDoc.getItemCount() == 0){
+                    tvNoTopic.setVisibility(View.VISIBLE);
+                    rvDoctors.setVisibility(View.GONE);
+                } else {
+                    tvNoTopic.setVisibility(View.GONE);
+                    rvDoctors.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -50,6 +50,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/colorAccent"
+        android:ems="10"
+        android:inputType="datetime"
         android:paddingLeft="24dp"
         android:textColor="@color/white"
         android:textCursorDrawable="@drawable/color_cursor" />
@@ -67,11 +69,24 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvDoctors"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3" />
+        android:layout_weight="3">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDoctors"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvNoDoctors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No doctors" />
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -86,11 +101,25 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvTopics"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3" />
+        android:layout_weight="3">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTopics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvNoTopics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No topics" />
+
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -90,6 +90,22 @@ public class DbUserHelper {
         return list;
     }
 
+    public static User create(String login, String email, String password){
+        User u = DbUserHelper.getUser(login);
+        if (u != null){
+            return null;
+        }
+
+        User user = new User();
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setPermission(User.PERMISSIONDOCTOR);
+        DbUserHelper.getUserDao().insert(user);
+
+        return user;
+    }
+
     private static boolean isContains(User user, List<User> list) {
         for (User u : list) {
             if (u.getId().equals(user.getId())) {

@@ -12,4 +12,9 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void addition_isCo32e32rrect() throws Exception {
+        assertEquals(4, 2 + 3);
+    }
 }

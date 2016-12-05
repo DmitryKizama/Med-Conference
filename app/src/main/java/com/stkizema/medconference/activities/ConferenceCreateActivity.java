@@ -38,7 +38,7 @@ public class ConferenceCreateActivity extends AppCompatActivity implements Docto
         setContentView(R.layout.activity_create_conference);
 
         rv = (RecyclerView) findViewById(R.id.rv_doctor);
-        adapter = new DoctorRecyclerViewAdapter(DbUserHelper.getListDoctors(), this);
+        adapter = new DoctorRecyclerViewAdapter<>(DbUserHelper.getListDoctors(), this);
         rv.setAdapter(adapter);
         rv.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
