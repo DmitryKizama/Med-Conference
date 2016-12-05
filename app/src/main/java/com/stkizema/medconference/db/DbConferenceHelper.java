@@ -117,5 +117,11 @@ public class DbConferenceHelper {
         return null;
     }
 
+    public static List<ConnectionConfUser> getAllConnectionByConferenceId(Long id){
+        ConnectionConfUserDao connDao = daoSession.getConnectionConfUserDao();
+        Query<ConnectionConfUser> queryConn = connDao.queryBuilder().where(ConnectionConfUserDao.Properties.ConfId.eq(id)).build();
+        return queryConn.list();
+    }
+
 
 }

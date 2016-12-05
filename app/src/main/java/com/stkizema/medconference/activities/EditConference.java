@@ -1,5 +1,6 @@
 package com.stkizema.medconference.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import com.stkizema.medconference.adapters.DoctorRecyclerViewAdapter;
 import com.stkizema.medconference.db.DbConferenceHelper;
 import com.stkizema.medconference.db.DbTopicHelper;
 import com.stkizema.medconference.db.DbUserHelper;
+import com.stkizema.medconference.model.Conference;
+import com.stkizema.medconference.model.ConnectionConfUser;
 import com.stkizema.medconference.model.Topic;
 import com.stkizema.medconference.model.User;
 
@@ -32,6 +35,7 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
     private DoctorRecyclerViewAdapter adapterDoc, topicAdapter;
     private List<User> listUser;
     private List<Topic> listTopic;
+    private Long conferenceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +45,13 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
         etName = (EditText) findViewById(R.id.etName);
         rvDoctors = (RecyclerView) findViewById(R.id.rvDoctors);
         rvTopics = (RecyclerView) findViewById(R.id.rvTopics);
-        btnDelete = (Button) findViewById(R.id.btnCancel);
+        btnDelete = (Button) findViewById(R.id.btnDelete);
         btnEdit = (Button) findViewById(R.id.btnEditOk);
 
         listUser = new ArrayList<>();
         listTopic = new ArrayList<>();
 
-        Long conferenceId = 1L;
+        conferenceId = 1L;
         if (getIntent() != null) {
             conferenceId = getIntent().getLongExtra(InConferenceActivity.EXTRACONFERID, 1L);
         }
@@ -73,16 +77,48 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
                 if (!editOk()) {
                     return;
                 }
+                startConferenceActivity();
             }
         });
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete();
+                startConferenceActivity();
+            }
+        });
+    }
+
+    private void startConferenceActivity() {
+        Intent intent = new Intent(EditConference.this, ConferencesActivity.class);
+        intent.putExtra(MainActivity.EXTRAPERMISSION, User.PERMISSIONADMIN);
+        intent.putExtra(MainActivity.EXTRALOGIN, "admin");
+        EditConference.this.finish();
+        startActivity(intent);
+    }
+
+    private void delete() {
+        Conference conf = DbConferenceHelper.getConferenceById(conferenceId);
+
+        List<ConnectionConfUser> list = DbConferenceHelper.getAllConnectionByConferenceId(conferenceId);
+        for (ConnectionConfUser con : list) {
+            DbConferenceHelper.getConnDao().delete(con);
+        }
+        List<Topic> listTopic = DbTopicHelper.getAllTopicByConferenceId(conferenceId);
+        for (Topic topic : listTopic) {
+            DbTopicHelper.getTopicDao().delete(topic);
+        }
+        DbConferenceHelper.getConferenceDao().delete(conf);
     }
 
     private boolean editOk() {
         String name = etName.getText().toString();
         String date = etDate.getText().toString();
+        Date d;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // here set the pattern as you date in string was containing like date/month/year
-            Date d = sdf.parse(date);
+            d = sdf.parse(date);
             Log.d("EditConference", "Date = " + d.toString());
         } catch (ParseException ex) {
             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
@@ -94,8 +130,27 @@ public class EditConference extends AppCompatActivity implements DoctorRecyclerV
             Toast.makeText(this, "Please enter name field!", Toast.LENGTH_SHORT).show();
             return false;
         }
+        Conference conf = DbConferenceHelper.getConferenceById(conferenceId);
+        conf.setDate(d);
+        conf.setName(name);
+        DbConferenceHelper.getConferenceDao().update(conf);
 
-        
+        for (User user : listUser) {
+            ConnectionConfUser conn = new ConnectionConfUser();
+            conn.setUserId(user.getId());
+            conn.setConfId(conferenceId);
+            DbConferenceHelper.getConnDao().insert(conn);
+        }
+
+        List<Topic> list = DbTopicHelper.getAllTopicByConferenceId(conferenceId);
+        int i = 0;
+        for (Topic topic : listTopic) {
+            Topic top = list.get(i);
+            if (topic.getTopicId().equals(top.getTopicId())) {
+                DbTopicHelper.getTopicDao().delete(topic);
+            }
+            ++i;
+        }
 
         return true;
     }
